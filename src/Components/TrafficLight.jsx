@@ -1,52 +1,78 @@
-// TrafficLightSimulator.jsx
-
-import React from 'react';
+import React, {useState,useEffect} from 'react';
 
 function TrafficLight(){
-  return (
-    <div className="traffic-light-container">
-        <div className="light red"></div>
-        <div className="light yellow"></div>
-    <div className="light green"></div>
 
-      
-      <style>{`
-        .traffic-light-container {
-          width: 120px;
-           padding: 20px;
-          background: #333;
-           border-radius: 20px;
-           display: flex;
-           flex-direction: column;
-           align-items: center;
-          gap: 20px;
-          box-shadow: 0 0 20px rgba(0,0,0,0.6);
-            justify-content: center;
-            margin-left: 45%;
-            margin-top: 45px;
-        }
+const[lights,setLights]=useState('red');
 
-        .light {
-          width: 60px;
-          height: 60px;
-          border-radius: 50%;
-          background: #222;
-        }
+useEffect(()=>{
 
-        .red {
-          background: red;
-        }
+  const interval = setInterval(()=>{
+    
+    setLights((l)=>{
+          if(l==="red"){return "yellow"}
+    
+          if(l==="yellow"){return "green"}
+    
+       return "red"
+    })
+  },3000)
+  
+  return ()=>clearInterval(interval)
 
-        .yellow {
-          background: yellow;
-        }
 
-        .green {
-          background: limegreen;
-        }
-      `}</style>
-    </div>
-  );
-};
+
+},[])
+
+return(
+
+
+            <div className="traffic-light-container">
+        
+        <div className={`light red ${lights==='red'?'active':''}`}></div>
+  
+      <div className={`light yellow ${lights==='yellow'?'active':''}`}></div>
+  
+        <div className={`light green ${lights==='green'?'active':''}`}></div>
+
+<style>{`
+
+    
+  .traffic-light-container {
+    width: 120px;
+    padding: 20px;
+    background: black;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    justify-content: center;
+    margin-left: 45%;
+    margin-top: 45px;
+  }
+
+  .light {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #222;
+    transition: background 0.5s, box-shadow 0.5s;
+  }
+
+  .red.active {
+    background: red;
+  }
+
+  .yellow.active {
+    background: yellow;
+  }
+
+  .green.active {
+    background: limegreen;
+  }
+`}</style>
+</div>
+)
+}
 
 export default TrafficLight;
